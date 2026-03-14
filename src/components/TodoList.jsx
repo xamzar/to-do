@@ -8,7 +8,7 @@ export default function TodoList({ todos, onDelete, onToggle, onEdit, onSetDueDa
   return (
     <ul className="space-y-2 mb-6">
       {filtered.length === 0 ? (
-        <li className="text-gray-400 text-center py-8">
+        <li className="text-gray-400 dark:text-gray-500 text-center py-8">
           {todos.length === 0 ? 'No tasks yet. Add one to get started!' : 'No tasks match your search.'}
         </li>
       ) : (

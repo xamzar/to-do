@@ -5,10 +5,11 @@ export default function TodoStats({ todos }) {
   const active = todos.length - completed;
 
   return (
-    <div className="flex justify-between text-sm text-gray-600 pt-4 border-t border-gray-200">
+    <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 pt-4 border-t border-gray-200 dark:border-gray-700">
       <span>Total: {todos.length}</span>
       <span>Active: {active}</span>
       <span>Completed: {completed}</span>
     </div>
   );
 }
+

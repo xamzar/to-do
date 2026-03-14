@@ -25,14 +25,14 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
   const dueDateColor = getDueDateColor(dueDateStatus);
 
   const priorityColor = {
-    low: 'bg-green-100 text-green-800',
-    medium: 'bg-yellow-100 text-yellow-800',
-    high: 'bg-red-100 text-red-800',
-  }[todo.priority] || 'bg-gray-100 text-gray-800';
+    low: 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+    medium: 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+    high: 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+  }[todo.priority] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
 
   if (isEditing) {
     return (
-      <li className="flex gap-2 p-3 bg-gray-50 rounded-lg">
+      <li className="flex gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
         <input
           autoFocus
           type="text"
@@ -43,28 +43,28 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
             if (e.key === 'Enter') handleSave();
             if (e.key === 'Escape') handleCancel();
           }}
-          className="flex-1 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-600 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </li>
     );
   }
 
   return (
-    <li className={`p-3 rounded-lg items-start transition ${todo.completed ? 'bg-gray-100' : 'bg-gray-50 hover:bg-gray-100'}`}>
+    <li className={`p-3 rounded-lg items-start transition ${todo.completed ? 'bg-gray-100 dark:bg-gray-700' : 'bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600'}`}>
       <div className="flex gap-3 items-start">
         <input
           type="checkbox"
           checked={todo.completed}
           onChange={onToggle}
-          className="w-5 h-5 text-blue-500 rounded cursor-pointer mt-1"
+          className="w-5 h-5 text-blue-500 rounded cursor-pointer mt-1 dark:accent-blue-500"
         />
         
         <div className="flex-1 min-w-0">
           <span
             className={`block ${
               todo.completed
-                ? 'line-through text-gray-400'
-                : 'text-gray-800'
+                ? 'line-through text-gray-400 dark:text-gray-500'
+                : 'text-gray-800 dark:text-gray-100'
             }`}
           >
             {todo.text}
@@ -89,7 +89,7 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
         <div className="flex gap-1 flex-shrink-0">
           <button
             onClick={() => setShowDatePicker(!showDatePicker)}
-            className="text-sm text-gray-500 hover:text-gray-700 p-1"
+            className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-1"
             title="Set due date"
           >
             <Calendar size={16} />
@@ -97,14 +97,14 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
           
           <button
             onClick={() => setIsEditing(true)}
-            className="text-sm text-blue-500 hover:text-blue-700 p-1"
+            className="text-sm text-blue-500 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 p-1"
           >
             <Edit2 size={16} />
           </button>
           
           <button
             onClick={onDelete}
-            className="text-sm text-red-500 hover:text-red-700 p-1"
+            className="text-sm text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 p-1"
           >
             <Trash2 size={16} />
           </button>
@@ -113,7 +113,7 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
 
       {/* Date Picker Popup */}
       {showDatePicker && (
-        <div className="mt-3 p-3 bg-white border border-gray-300 rounded-lg">
+        <div className="mt-3 p-3 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg">
           <DatePicker
             selected={todo.dueDate ? new Date(todo.dueDate) : null}
             onChange={(date) => {
