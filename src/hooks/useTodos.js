@@ -37,7 +37,7 @@ export default function useTodos() {
     localStorage.setItem('categories', JSON.stringify(categories));
   }, [categories]);
 
-  const addTodo = (text, dueDate = null, category = null) => {
+  const addTodo = (text, dueDate = null, category = null, description = '') => {
     const newTodo = {
       id: generateId(),
       text,
@@ -45,6 +45,7 @@ export default function useTodos() {
       dueDate,
       priority: 'medium',
       category,
+      description,
     };
     setTodos([...todos, newTodo]);
   };
@@ -65,6 +66,14 @@ export default function useTodos() {
     setTodos(
       todos.map((t) =>
         t.id === id ? { ...t, text: newText } : t
+      )
+    );
+  };
+
+  const setDescription = (id, description) => {
+    setTodos(
+      todos.map((t) =>
+        t.id === id ? { ...t, description } : t
       )
     );
   };
@@ -101,7 +110,6 @@ export default function useTodos() {
 
   const removeCategory = (name) => {
     setCategories(categories.filter((c) => c !== name));
-    // Remove category from todos
     setTodos(
       todos.map((t) =>
         t.category === name ? { ...t, category: null } : t
@@ -116,6 +124,7 @@ export default function useTodos() {
     deleteTodo,
     toggleTodo,
     editTodo,
+    setDescription,
     setDueDate,
     setPriority,
     setCategory,

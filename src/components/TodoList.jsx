@@ -10,6 +10,7 @@ export default function TodoList({
   onSetDueDate,
   onSetPriority,
   onSetCategory,
+  onSetDescription,
   filter,
   searchText,
   categories,
@@ -33,6 +34,7 @@ export default function TodoList({
             onSetDueDate={(date) => onSetDueDate(todo.id, date)}
             onSetPriority={(priority) => onSetPriority(todo.id, priority)}
             onSetCategory={(category) => onSetCategory(todo.id, category)}
+            onSetDescription={(description) => onSetDescription(todo.id, description)}
             categories={categories}
           />
         ))

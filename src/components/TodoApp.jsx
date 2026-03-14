@@ -19,6 +19,7 @@ export default function TodoApp() {
     deleteTodo,
     toggleTodo,
     editTodo,
+    setDescription,
     setDueDate,
     setPriority,
     setCategory,
@@ -75,6 +76,7 @@ export default function TodoApp() {
           onSetDueDate={setDueDate}
           onSetPriority={setPriority}
           onSetCategory={setCategory}
+          onSetDescription={setDescription}
           filter={filter}
           searchText={searchText}
           categories={categories}
