@@ -4,6 +4,8 @@ import { filterTodos } from '../hooks/useFilter';
 
 export default function TodoList({
   todos,
+  selected,
+  onSelect,
   onDelete,
   onToggle,
   onEdit,
@@ -28,6 +30,8 @@ export default function TodoList({
           <TodoItem
             key={todo.id}
             todo={todo}
+            isSelected={selected.has(todo.id)}
+            onSelect={() => onSelect(todo.id)}
             onDelete={() => onDelete(todo.id)}
             onToggle={() => onToggle(todo.id)}
             onEdit={(newText) => onEdit(todo.id, newText)}
