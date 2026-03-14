@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import TodoInput from './TodoInput';
+import TodoSearch from './TodoSearch';
 import TodoList from './TodoList';
 import TodoFilter from './TodoFilter';
 import TodoStats from './TodoStats';
@@ -8,7 +9,7 @@ import useFilter from '../hooks/useFilter';
 
 export default function TodoApp() {
   const { todos, addTodo, deleteTodo, toggleTodo, editTodo, setDueDate, setPriority } = useTodos();
-  const { filter, setFilter } = useFilter();
+  const { filter, setFilter, searchText, setSearchText } = useFilter();
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
@@ -16,6 +17,8 @@ export default function TodoApp() {
         <h1 className="text-3xl font-bold text-gray-800 mb-6">📝 To-Do List</h1>
         
         <TodoInput onAdd={addTodo} />
+        
+        <TodoSearch searchText={searchText} onSearchChange={setSearchText} />
         
         <TodoFilter currentFilter={filter} onFilterChange={setFilter} />
         
@@ -27,6 +30,7 @@ export default function TodoApp() {
           onSetDueDate={setDueDate}
           onSetPriority={setPriority}
           filter={filter}
+          searchText={searchText}
         />
         
         <TodoStats todos={todos} />

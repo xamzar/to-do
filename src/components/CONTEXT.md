@@ -9,6 +9,7 @@ Build modular, reusable React components here. Each component is self-contained 
 **Responsibilities:**
 - Maintains tasks array state (id, text, completed, dueDate, priority)
 - Maintains filter state (all/active/completed)
+- Maintains search state
 - Manages callbacks: addTodo, deleteTodo, toggleTodo, editTodo, setDueDate, setPriority
 
 **Props:** None (root component)
@@ -16,8 +17,9 @@ Build modular, reusable React components here. Each component is self-contained 
 **State:**
 - `todos`: Array of task objects with dueDate and priority fields
 - `filter`: Current active filter
+- `searchText`: Current search query
 
-**Children:** TodoInput, TodoFilter, TodoList, TodoStats
+**Children:** TodoInput, TodoSearch, TodoFilter, TodoList, TodoStats
 
 ---
 
@@ -41,8 +43,23 @@ Build modular, reusable React components here. Each component is self-contained 
 
 ---
 
+## TodoSearch.jsx (NEW)
+**Purpose:** Search input for filtering tasks by text.
+
+**Props:**
+- `searchText`: Current search query
+- `onSearchChange(text)`: Callback when search changes
+
+**Features:**
+- Search icon (lucide-react)
+- Case-insensitive search
+- Clear button (X) to reset search
+- Real-time filtering as user types
+
+---
+
 ## TodoList.jsx
-**Purpose:** Render filtered list of tasks.
+**Purpose:** Render filtered and searched list of tasks.
 
 **Props:**
 - `todos`: Array of all tasks
@@ -52,10 +69,11 @@ Build modular, reusable React components here. Each component is self-contained 
 - `onSetDueDate(id, date)`: Set task due date
 - `onSetPriority(id, priority)`: Set task priority
 - `filter`: Current filter ('all', 'active', 'completed')
+- `searchText`: Current search query
 
 **Behavior:**
-- Filter todos using filterTodos() utility
-- Show "No tasks" fallback if empty
+- Apply both filter and search via filterTodos(todos, filter, searchText)
+- Show contextual message if empty ("No tasks yet" vs "No tasks match")
 - Render TodoItem for each filtered task
 - Pass all callbacks to TodoItem
 
@@ -83,7 +101,7 @@ Build modular, reusable React components here. Each component is self-contained 
 - Inline date picker (click Calendar icon)
 - Priority badge (low/medium/high color-coded)
 - Due date display with status (overdue/today/upcoming)
-- Delete button
+- Delete button with icon
 
 **Due Date Styling:**
 - Overdue: Red background + "overdue" label
@@ -121,3 +139,4 @@ Build modular, reusable React components here. Each component is self-contained 
 - Overdue: todos.filter(t => isOverdue(t.dueDate, t.completed)).length
 
 **Display:** Four stat values in footer row
+

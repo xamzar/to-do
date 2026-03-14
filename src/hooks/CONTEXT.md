@@ -40,24 +40,28 @@ const { todos, addTodo, deleteTodo, toggleTodo, editTodo, setDueDate, setPriorit
 
 ---
 
-## useFilter.js
-**Purpose:** Filter state management + filtering utility.
+## useFilter.js (Updated)
+**Purpose:** Filter state management + search + filtering utility.
 
 **API:**
 ```js
-const { filter, setFilter } = useFilter();
-const filtered = filterTodos(todos, filter);
+const { filter, setFilter, searchText, setSearchText } = useFilter();
+const filtered = filterTodos(todos, filter, searchText);
 ```
 
 **Hook Returns:**
 - `filter`: Current filter string ('all', 'active', 'completed')
 - `setFilter(newFilter)`: Update filter state
+- `searchText`: Current search query
+- `setSearchText(text)`: Update search query
 
-**filterTodos() Logic:**
-- 'all': Return all todos
-- 'active': Return only todos where completed === false
-- 'completed': Return only todos where completed === true
+**filterTodos(todos, filter, searchText) Logic:**
+- **Filter Step:** Apply filter (all/active/completed)
+- **Search Step:** Case-insensitive substring match on task text
+- Returns: Filtered and searched todos array
 
 **Initial State:**
 - Default filter: 'all'
+- Default searchText: '' (empty)
 - Use constants from ../utils/constants.js
+
