@@ -2,16 +2,29 @@ import { useState, useEffect } from 'react';
 import { STORAGE_KEY } from '../utils/constants';
 import generateId from '../utils/generateId';
 
+const DEFAULT_CATEGORIES = ['Work', 'Personal', 'Shopping', 'Health'];
+
 export default function useTodos() {
   const [todos, setTodos] = useState([]);
+  const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
 
   useEffect(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
+    const storedCats = localStorage.getItem('categories');
+    
     if (stored) {
       try {
         setTodos(JSON.parse(stored));
       } catch (e) {
         console.error('Failed to parse stored todos', e);
+      }
+    }
+    
+    if (storedCats) {
+      try {
+        setCategories(JSON.parse(storedCats));
+      } catch (e) {
+        console.error('Failed to parse stored categories', e);
       }
     }
   }, []);
@@ -20,13 +33,18 @@ export default function useTodos() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
 
-  const addTodo = (text, dueDate = null) => {
+  useEffect(() => {
+    localStorage.setItem('categories', JSON.stringify(categories));
+  }, [categories]);
+
+  const addTodo = (text, dueDate = null, category = null) => {
     const newTodo = {
       id: generateId(),
       text,
       completed: false,
-      dueDate, // ISO date string or null
-      priority: 'medium', // low, medium, high
+      dueDate,
+      priority: 'medium',
+      category,
     };
     setTodos([...todos, newTodo]);
   };
@@ -67,6 +85,43 @@ export default function useTodos() {
     );
   };
 
-  return { todos, addTodo, deleteTodo, toggleTodo, editTodo, setDueDate, setPriority };
+  const setCategory = (id, category) => {
+    setTodos(
+      todos.map((t) =>
+        t.id === id ? { ...t, category } : t
+      )
+    );
+  };
+
+  const addCategory = (name) => {
+    if (!categories.includes(name)) {
+      setCategories([...categories, name]);
+    }
+  };
+
+  const removeCategory = (name) => {
+    setCategories(categories.filter((c) => c !== name));
+    // Remove category from todos
+    setTodos(
+      todos.map((t) =>
+        t.category === name ? { ...t, category: null } : t
+      )
+    );
+  };
+
+  return {
+    todos,
+    categories,
+    addTodo,
+    deleteTodo,
+    toggleTodo,
+    editTodo,
+    setDueDate,
+    setPriority,
+    setCategory,
+    addCategory,
+    removeCategory,
+  };
 }
+
 

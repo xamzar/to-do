@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Calendar, Edit2, Trash2 } from 'lucide-react';
+import { Calendar, Edit2, Trash2, Tag } from 'lucide-react';
 import { formatDate, getDueDateStatus, getDueDateColor } from '../utils/dateUtils';
+import { getCategoryColor } from '../utils/categoryUtils';
 
-export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDate, onSetPriority }) {
+export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDate, onSetPriority, onSetCategory, categories }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(todo.text);
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showCategorySelect, setShowCategorySelect] = useState(false);
 
   const handleSave = () => {
     if (editText.trim()) {
@@ -70,8 +72,15 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
             {todo.text}
           </span>
           
-          {/* Due Date & Priority */}
+          {/* Metadata */}
           <div className="flex gap-2 mt-2 flex-wrap">
+            {todo.category && (
+              <span className={`text-xs px-2 py-1 rounded ${getCategoryColor(todo.category)}`}>
+                <Tag size={12} className="inline mr-1" />
+                {todo.category}
+              </span>
+            )}
+
             {todo.dueDate && (
               <span className={`text-xs px-2 py-1 rounded ${dueDateColor}`}>
                 <Calendar size={12} className="inline mr-1" />
@@ -87,6 +96,14 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
 
         {/* Actions */}
         <div className="flex gap-1 flex-shrink-0">
+          <button
+            onClick={() => setShowCategorySelect(!showCategorySelect)}
+            className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-1"
+            title="Set category"
+          >
+            <Tag size={16} />
+          </button>
+
           <button
             onClick={() => setShowDatePicker(!showDatePicker)}
             className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 p-1"
@@ -110,6 +127,27 @@ export default function TodoItem({ todo, onDelete, onToggle, onEdit, onSetDueDat
           </button>
         </div>
       </div>
+
+      {/* Category Select Popup */}
+      {showCategorySelect && (
+        <div className="mt-3 p-3 bg-white dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded-lg">
+          <select
+            value={todo.category || ''}
+            onChange={(e) => {
+              onSetCategory(e.target.value || null);
+              setShowCategorySelect(false);
+            }}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-500 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">No category</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Date Picker Popup */}
       {showDatePicker && (

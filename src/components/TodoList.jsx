@@ -2,7 +2,18 @@ import React from 'react';
 import TodoItem from './TodoItem';
 import { filterTodos } from '../hooks/useFilter';
 
-export default function TodoList({ todos, onDelete, onToggle, onEdit, onSetDueDate, onSetPriority, filter, searchText }) {
+export default function TodoList({
+  todos,
+  onDelete,
+  onToggle,
+  onEdit,
+  onSetDueDate,
+  onSetPriority,
+  onSetCategory,
+  filter,
+  searchText,
+  categories,
+}) {
   const filtered = filterTodos(todos, filter, searchText);
 
   return (
@@ -21,6 +32,8 @@ export default function TodoList({ todos, onDelete, onToggle, onEdit, onSetDueDa
             onEdit={(newText) => onEdit(todo.id, newText)}
             onSetDueDate={(date) => onSetDueDate(todo.id, date)}
             onSetPriority={(priority) => onSetPriority(todo.id, priority)}
+            onSetCategory={(category) => onSetCategory(todo.id, category)}
+            categories={categories}
           />
         ))
       )}
