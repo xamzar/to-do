@@ -20,11 +20,13 @@ export default function useTodos() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
   }, [todos]);
 
-  const addTodo = (text) => {
+  const addTodo = (text, dueDate = null) => {
     const newTodo = {
       id: generateId(),
       text,
       completed: false,
+      dueDate, // ISO date string or null
+      priority: 'medium', // low, medium, high
     };
     setTodos([...todos, newTodo]);
   };
@@ -49,5 +51,22 @@ export default function useTodos() {
     );
   };
 
-  return { todos, addTodo, deleteTodo, toggleTodo, editTodo };
+  const setDueDate = (id, dueDate) => {
+    setTodos(
+      todos.map((t) =>
+        t.id === id ? { ...t, dueDate } : t
+      )
+    );
+  };
+
+  const setPriority = (id, priority) => {
+    setTodos(
+      todos.map((t) =>
+        t.id === id ? { ...t, priority } : t
+      )
+    );
+  };
+
+  return { todos, addTodo, deleteTodo, toggleTodo, editTodo, setDueDate, setPriority };
 }
+
